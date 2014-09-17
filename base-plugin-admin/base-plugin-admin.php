@@ -120,7 +120,7 @@ class BasePluginAdmin {
             $this->plugin_rel_base.'/langs/');
     }
 
-    private function renderTemplate($name, $vars = array()) {
+    private function renderTemplate($name, $vars=array()) {
         foreach ($vars as $key => $val) {
             $$key = $val;
         }
