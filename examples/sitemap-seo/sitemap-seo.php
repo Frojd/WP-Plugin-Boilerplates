@@ -23,31 +23,31 @@ class SitemapSeo {
     protected $plugin_slug = 'sitemap_seo';
     protected static $instance = null;
 
-    protected $supported_types = array("post", "page");
-    protected $plugin_base;
-    protected $plugin_rel_base;
+    protected $supportedTypes = array("post", "page");
+    protected $pluginBase;
+    protected $pluginRelBase;
 
 
     private function __construct() {
-        $this->plugin_base = rtrim(dirname(__FILE__), '/');
-        $this->plugin_rel_base = dirname(plugin_basename(__FILE__));
+        $this->pluginBase = rtrim(dirname(__FILE__), '/');
+        $this->pluginRelBase= dirname(plugin_basename(__FILE__));
 
-        register_activation_hook(__FILE__, array(&$this, 'activation_hook'));
-        register_activation_hook(__FILE__, array(&$this, 'deactivation_hook'));
-        register_uninstall_hook(__FILE__, array(get_class(), 'uninstall_hook'));
+        register_activation_hook(__FILE__, array(&$this, 'activationHook'));
+        register_activation_hook(__FILE__, array(&$this, 'deactivationHook'));
+        register_uninstall_hook(__FILE__, array(get_class(), 'uninstallHook'));
 
-        add_action('plugins_loaded', array( $this, 'plugins_loaded_hook'));
-        add_action('admin_init', array($this, 'admin_init_hook'));
-        add_action('init', array($this, 'init_hook'));
+        add_action('plugins_loaded', array( $this, 'pluginsLoadedHook'));
+        add_action('admin_init', array($this, 'adminInitHook'));
+        add_action('init', array($this, 'initHook'));
         add_filter('generate_rewrite_rules',
-            array($this, 'generate_rewrite_rules_hook'));
-        add_action('parse_request', array($this, 'parse_request_hook'));
-        add_action('do_feed_sitemap', array($this, 'do_feed_sitemap_hook'), 10, 1 );
-        add_action('do_meta_boxes', array($this, 'do_meta_boxes_hook'));
-        add_action('save_post', array($this, 'save_post_hook'));
+            array($this, 'generateRewriteRulesHook'));
+        add_action('parse_request', array($this, 'parseRequestHook'));
+        add_action('do_feed_sitemap', array($this, 'doFeedSitemapHook'), 10, 1 );
+        add_action('do_meta_boxes', array($this, 'doMetaBoxesHook'));
+        add_action('save_post', array($this, 'savePostHook'));
     }
 
-    public static function get_instance() {
+    public static function getInstance() {
         if (self::$instance == null) {
             self::$instance = new self();
         }
@@ -59,42 +59,42 @@ class SitemapSeo {
      * Hooks
      *------------------------------------------------------------------------*/
 
-    public function activation_hook($network_wide) {
+    public function activationHook($networkWide) {
     }
 
-    public function deactivation_hook($network_wide) {
+    public function deactivationHook($networkWide) {
     }
 
-    public static function uninstall_hook($network_wide) {
+    public static function uninstallHook($networkWide) {
         if (! defined('WP_UNINSTALL_PLUGIN')) {
             die();
         }
     }
 
-    public function plugins_loaded_hook() {
-        $this->init_textdomain();
+    public function pluginsLoadedHook() {
+        $this->initTextdomain();
     }
 
-    public function admin_init_hook() {
-        $this->register_seo_description_settings();
-        $this->register_robot_settings();
+    public function adminInitHook() {
+        $this->registerSeoDescriptionSettings();
+        $this->registerRobotSettings();
     }
 
-    public function init_hook() {
-        $this->flush_rules();
+    public function initHook() {
+        $this->flushRules();
     }
 
-    public function generate_rewrite_rules_hook() {
+    public function generateRewriteRulesHook() {
         global $wp_rewrite;
 
-        $feed_rules = array(
+        $feedRules = array(
             '.*sitemap.xml$' => 'index.php?feed=sitemap'
         );
 
-        $wp_rewrite->rules = $feed_rules + $wp_rewrite->rules;
+        $wp_rewrite->rules = $feedRules + $wp_rewrite->rules;
     }
 
-    public function parse_request_hook() {
+    public function parseRequestHook() {
         global $wp;
 
         if (preg_match('/robots.txt$/i', $wp->request)) {
@@ -103,17 +103,17 @@ class SitemapSeo {
         }
     }
 
-    public function do_feed_sitemap_hook() {
-        $template_dir = dirname(__FILE__);
-        $this->render_template('sitemap-template');
+    public function doFeedSitemapHook() {
+        $template_dir = dirname(__FILE__);  // TODO: Is this in use?
+        $this->renderTemplate('sitemap-template');
     }
 
-    public function do_meta_boxes_hook() {
+    public function doMetaBoxesHook() {
         foreach ($this->supported_types as $screen) {
             add_meta_box(
                 self::SEO_KEYWORDS_FIELD,
                 __('SEO keywords', 'sitemap-seo'),
-                array($this, 'seo_post_keywords_metabox'),
+                array($this, 'seoPostKeywordsMetabox'),
                 $screen,
                 'normal',
                 'default'
@@ -121,7 +121,7 @@ class SitemapSeo {
         }
     }
 
-    public function save_post_hook() {
+    public function savePostHook() {
         global $post;
 
         if (! in_array($post->post_type, $this->supported_types)) {
@@ -143,32 +143,32 @@ class SitemapSeo {
         // fields to it
         add_settings_section('seo_setting_section',
             'SEO settings',
-            array($this, 'seo_setting_section_callback'),
+            array($this, 'seoSettingSectionCallback'),
             'general');
 
         // Add the field with the names and function to use for our new
         // settings, put it in our new section
-        add_settings_field('seo_setting_description',
+        add_settings_field('seoSettingDescription',
             'Site description',
-            array($this, 'seo_setting_description_callback'),
+            array($this, 'seoSettingDescription_callback'),
             'general',
             'seo_setting_section');
 
         add_settings_field('seo_setting_keywords_enabled',
             'Enable keywords',
-            array($this, 'seo_setting_keywords_enabled_callback'),
+            array($this, 'seoSettingKeywordsEnabledCallback'),
             'general',
             'seo_setting_section');
 
         add_settings_field('seo_setting_keywords',
             'Keywords',
-            array($this, 'seo_setting_keywords_callback'),
+            array($this, 'seoSettingKeywordsCallback'),
             'general',
             'seo_setting_section');
 
         // Register our setting so that $_POST handling is done for us and
         // our callback function just has to echo the <input>
-        register_setting('general', 'seo_setting_description');
+        register_setting('general', 'seoSettingDescription');
         register_setting('general', 'seo_setting_keywords_enabled');
         register_setting('general', 'seo_setting_keywords');
     }
@@ -183,40 +183,40 @@ class SitemapSeo {
         add_settings_field(
             'robots_txt',
             '<label for="robots_txt">'.__('Robots.txt', 'sitemap-seo' ).'</label>',
-            array($this, 'robots_txt_fields_html'),
+            array($this, 'robotsTxtFieldsHtml'),
             'reading'
         );
 
         register_setting(
             'reading',
             'sitemap_settings',
-            array($this, 'convert_setting_format')
+            array($this, 'convertSettingFormat')
         );
 
         add_settings_field('sitemap_settings',
             '<label for="sitemap_settings">'
             .__('Sitemap settings', 'sitemap-seo').'</label>',
-            array($this, 'robots_txt_sitemap_settings_html'),
+            array($this, 'robotsTxtSitemapSettingsHtml'),
             'reading'
         );
     }
 
-    public function convert_setting_format() {
+    public function convertSettingFormat() {
         $sitemap_settings = implode(',', $_POST['sitemap_settings']);
         return $sitemap_settings;
     }
 
-    public function robots_txt_sitemap_settings_html() {
-        $sitemap_post_types = array();
-        $sitemap_post_types = get_option( 'sitemap_settings', '' );
-        $sitemap_post_types = explode(',', $sitemap_post_types);
+    public function robotsTxtSitemapSettingsHtml() {
+        $sitemapPostTypes = array();
+        $sitemapPostTypes = get_option( 'sitemap_settings', '' );
+        $sitemapPostTypes = explode(',', $sitemapPostTypes);
         $post_types = get_post_types(array( 'show_ui' => true ), 'objects');
 
         echo '<select id="sitemap_settings" name="sitemap_settings[]" multiple>';
         foreach($post_types as $post_type) {
             $selected = false;
 
-            if (array_search($post_type->name, $sitemap_post_types, true) !== false) {
+            if (array_search($post_type->name, $sitemapPostTypes, true) !== false) {
                 $selected = true;
             }
 
@@ -228,39 +228,39 @@ class SitemapSeo {
         echo '</select>';
     }
 
-    public function robots_txt_fields_html() {
+    public function robotsTxtFieldsHtml() {
         $value = get_option( 'robots_txt', '' );
         echo '<textarea rows="10" cols="100" id="robots_txt" name="robots_txt">'
             .$value
             .'</textarea>';
     }
 
-    public function seo_setting_section_callback() {
+    public function seoSettingSectionCallback() {
         echo '<p>Site description is used as meta description on the front page.</p>';
     }
 
-    public function seo_setting_description_callback() {
-        echo sprintf('<textarea name="seo_setting_description"
-            id="seo_setting_description" class="large-text code">%s</textarea>',
-            get_option('seo_setting_description')
+    public function seoSettingDescription_callback() {
+        echo sprintf('<textarea name="seoSettingDescription"
+            id="seoSettingDescription" class="large-text code">%s</textarea>',
+            get_option('seoSettingDescription')
         );
     }
 
-    public function seo_setting_keywords_enabled_callback() {
+    public function seoSettingKeywordsEnabledCallback() {
         echo sprintf('<input type="checkbox" name="seo_setting_keywords_enabled"
             id="seo_setting_keywords_enabled" value="1" %s>',
             (get_option('seo_setting_keywords_enabled') ? ' checked' : '')
         );
     }
 
-    public function seo_setting_keywords_callback() {
+    public function seoSettingKeywordsCallback() {
         echo sprintf('<textarea name="seo_setting_keywords"
             id="seo_setting_keywords" class="large-text code">%s</textarea>',
             get_option('seo_setting_keywords')
         );
     }
 
-    public function seo_post_keywords_metabox() {
+    public function seoPostKeywordsMetabox() {
         global $post;
 
         $value = get_post_meta($post->ID, self::SEO_KEYWORDS_FIELD, true);
@@ -276,31 +276,32 @@ class SitemapSeo {
      * Private
      *------------------------------------------------------------------------*/
 
-    private function init_textdomain() {
+    private function initTextdomain() {
         load_plugin_textdomain($this->plugin_slug, false,
             $this->plugin_rel_base.'/langs/');
     }
 
-    private function flush_rules() {
-        $rules = get_option( 'rewrite_rules' );
-        if ( !isset( $rules['.*sitemap.xml$'] ) ) {
+    private function flushRules() {
+        $rules = get_option('rewrite_rules');
+        if (!isset($rules['.*sitemap.xml$'])) {
             global $wp_rewrite;
             $wp_rewrite->flush_rules();
         }
     }
 
-    private function render_template($name, $vars=array()) {
+    private function renderTemplate($name, $vars=array()) {
         foreach ($vars as $key => $val) {
             $$key = $val;
         }
 
-        $template_path = $this->plugin_base.'/templates/'.$name.'.php';
-        if (file_exists($template_path)) {
-            include($template_path);
+        $templatePath = $this->plugin_base.'/templates/'.$name.'.php';
+        if (file_exists($templatePath)) {
+            include($templatePath);
         } else {
             echo '<p>Rendering of admin template failed</p>';
         }
     }
 }
 
-SitemapSeo::get_instance();
+SitemapSeo::getInstance();
+
