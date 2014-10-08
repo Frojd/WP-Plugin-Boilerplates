@@ -52,7 +52,6 @@ class BasePluginCPT {
      *------------------------------------------------------------------------*/
 
     public function activationHook($networkWide) {
-        $this->checkRequirements();
     }
 
     public function deactivationHook($networkWide) {
