@@ -92,13 +92,13 @@ class BasePluginCPT {
             'has_archive' => false,
             'hierarchical' => false,
             'menu_position' => null,
-            'supports' => array( 'title', 'thumbnail' )
+            'supports' => array('title', 'thumbnail')
         );
 
         register_post_type($this->postType, $args);
     }
 
-    private function renderTemplate($name, $vars = array()) {
+    private function renderTemplate($name, $vars=array()) {
         foreach ($vars as $key => $val) {
             $$key = $val;
         }
