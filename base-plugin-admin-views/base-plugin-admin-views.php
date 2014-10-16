@@ -84,11 +84,11 @@ class BasePluginAdminViews {
             $$key = $val;
         }
 
-        $path = $this->plugin_base.'/templates/'.$name.'.php';
+        $path = $this->pluginBase.'/templates/'.$name.'.php';
         if (file_exists($path)) {
             include($path);
         } else {
-            echo '<p>Rendering of admin template failed</p>';
+            echo '<p>Rendering of template failed</p>';
         }
     }
 

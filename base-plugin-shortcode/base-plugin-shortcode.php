@@ -94,7 +94,7 @@ class BasePluginShortcode {
         if (file_exists($path)) {
             include($path);
         } else {
-            echo '<p>Rendering of admin template failed</p>';
+            echo '<p>Rendering of template failed</p>';
         }
     }
 }
