@@ -84,7 +84,7 @@ class BasePluginAdminViews {
             $$key = $val;
         }
 
-        $path = $this->plugin_base.'/templates/'.$name.'.php';
+        $path = $this->pluginBase.'/templates/'.$name.'.php';
         if (file_exists($path)) {
             include($path);
         } else {
@@ -97,8 +97,8 @@ class BasePluginAdminViews {
      *------------------------------------------------------------------------*/
 
     private function initTextdomain() {
-        load_plugin_textdomain($this->plugin_slug, false,
-            $this->plugin_rel_base.'/langs/');
+        load_plugin_textdomain($this->pluginSlug, false,
+            $this->pluginRelBase.'/langs/');
     }
 }
 
