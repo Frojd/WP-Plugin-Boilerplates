@@ -16,6 +16,8 @@
  * License: GPLv2 or later
  */
 
+namespace Frojd\Plugin\BasePluginAdmin;
+
 class BasePluginAdmin {
     const VERSION = '1.0';
 
@@ -116,8 +118,8 @@ class BasePluginAdmin {
      *------------------------------------------------------------------------*/
 
     private function initTextdomain() {
-        load_plugin_textdomain($this->plugin_slug, false,
-            $this->plugin_rel_base.'/langs/');
+        load_plugin_textdomain($this->pluginSlug, false,
+            $this->pluginRelBase.'/langs/');
     }
 
     private function renderTemplate($name, $vars=array()) {

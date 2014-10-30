@@ -16,6 +16,8 @@
  * License: GPLv2 or later
  */
 
+namespace Frojd\Plugin\BasePluginCPT;
+
 class BasePluginCPT {
     const VERSION = '1.0';
 

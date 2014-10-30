@@ -16,6 +16,8 @@
  * License: Fröjd Interactive AB (All Rights Reserved).
  */
 
+namespace Frojd\Plugin\BasePluginShortcode;
+
 class BasePluginShortcode {
     const VERSION = '1.0';
 
@@ -94,7 +96,7 @@ class BasePluginShortcode {
         if (file_exists($path)) {
             include($path);
         } else {
-            echo '<p>Rendering of admin template failed</p>';
+            echo '<p>Rendering of template failed</p>';
         }
     }
 }

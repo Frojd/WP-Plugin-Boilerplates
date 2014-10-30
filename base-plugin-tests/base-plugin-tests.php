@@ -16,6 +16,8 @@
  * License: Fröjd Interactive AB (All Rights Reserved).
  */
 
+namespace Frojd\Plugin\BasePluginTests;
+
 class BasePluginTests {
     const VERSION = '1.0';
 

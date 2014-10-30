@@ -15,6 +15,8 @@
  * License: GPLv2 or later
  */
 
+namespace Frojd\Plugin\BasePluginRequirements;
+
 class BasePluginRequirements {
     const VERSION = '1.0';
 
@@ -89,7 +91,7 @@ class BasePluginRequirements {
         if (file_exists($path)) {
             include($path);
         } else {
-            echo '<p>Rendering of admin template failed</p>';
+            echo '<p>Rendering of template failed</p>';
         }
     }
 }
