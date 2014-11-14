@@ -73,7 +73,7 @@ class BasePluginAdmin {
     }
 
     public function adminEnqueueScriptsHook($page) {
-        if ($page == 'settings_page_' . $this->plugin_slug) {
+        if ($page == 'settings_page_' . $this->pluginSlug) {
             wp_enqueue_script('base-plugin-admin-script',
                 plugins_url($this->pluginRelBase.'/js/admin.js' ) );
             wp_enqueue_style('base-plugin-admin-styles',
