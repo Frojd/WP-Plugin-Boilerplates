@@ -56,13 +56,13 @@ class BasePluginAdmin {
      * Hooks
      *------------------------------------------------------------------------*/
 
-    public function activationHook($network_wide) {
+    public function activationHook($networkWide) {
     }
 
-    public function deactivationHook($network_wide) {
+    public function deactivationHook($networkWide) {
     }
 
-    public static function uninstallHook($network_wide) {
+    public static function uninstallHook($networkWide) {
         if (! defined('WP_UNINSTALL_PLUGIN')) {
             die();
         }
@@ -75,9 +75,9 @@ class BasePluginAdmin {
     public function adminEnqueueScriptsHook($page) {
         if ($page == 'settings_page_' . $this->plugin_slug) {
             wp_enqueue_script('base-plugin-admin-script',
-                plugins_url($this->plugin_rel_base.'/js/admin.js' ) );
+                plugins_url($this->pluginRelBase.'/js/admin.js' ) );
             wp_enqueue_style('base-plugin-admin-styles',
-                plugins_url($this->plugin_rel_base.'/css/admin.css'));
+                plugins_url($this->pluginRelBase.'/css/admin.css'));
         }
     }
 
