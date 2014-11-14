@@ -87,7 +87,7 @@ class BasePluginAdmin {
             __('Base Plugin Admin'),
             'manage_options',
             'base-plugin-settings',
-            array($this, 'settings_page')
+            array($this, 'settingsPage')
         );
     }
 
