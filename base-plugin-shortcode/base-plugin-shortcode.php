@@ -28,8 +28,8 @@ class BasePluginShortcode {
     protected $pluginRelBase;
 
     private function __construct() {
-        $this->plugin_base = rtrim(dirname(__FILE__), '/');
-        $this->plugin_rel_base = dirname(plugin_basename(__FILE__));
+        $this->pluginBase = rtrim(dirname(__FILE__), '/');
+        $this->pluginRelBase = dirname(plugin_basename(__FILE__));
 
         register_activation_hook(__FILE__, array(&$this, 'activationHook'));
         register_deactivation_hook(__FILE__, array(&$this, 'deactivationHook'));
@@ -102,3 +102,4 @@ class BasePluginShortcode {
 }
 
 BasePluginShortcode::getInstance();
+
