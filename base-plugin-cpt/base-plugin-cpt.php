@@ -3,23 +3,23 @@
  *
  * @package   Base Plugin CPT
  * @author    Fröjd - Martin Sandström
- * @license   GPL-2.0+
+ * @license   Fröjd Interactive AB (All Rights Reserved).
  * @link      http://example.com
- * @copyright 2013 Fröjd
+ * @copyright Fröjd Interactive AB (All Rights Reserved).
  *
  * Plugin Name: Base Plugin CPT
  * Plugin URI: http://frojd.se
  * Description: Example
- * Version: 1.0
+ * Version: 1.0.0
  * Author: Fröjd - Martin Sandström
  * Author URI: http://frojd.se
- * License: GPLv2 or later
+ * License: Fröjd Interactive AB (All Rights Reserved).
  */
 
 namespace Frojd\Plugin\BasePluginCPT;
 
 class BasePluginCPT {
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     protected $pluginSlug = 'base_plugin_cpt';
     protected static $instance = null;

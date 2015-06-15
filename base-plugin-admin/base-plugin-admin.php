@@ -3,23 +3,23 @@
  *
  * @package   Base Plugin Admin
  * @author    Fröjd - Martin Sandström
- * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2013 Fröjd
+ * @license   Fröjd Interactive AB (All Rights Reserved).
+ * @link      http://frojd.se
+ * @copyright Fröjd Interactive AB (All Rights Reserved).
  *
  * Plugin Name: Base Plugin Admin
  * Plugin URI: http://frojd.se
  * Description: Example
- * Version: 1.0
- * Author: Fröjd
+ * Version: 1.0.0
+ * Author: Fröjd - Martin Sandström
  * Author URI: http://frojd.se
- * License: GPLv2 or later
+ * License: Fröjd Interactive AB (All Rights Reserved).
  */
 
 namespace Frojd\Plugin\BasePluginAdmin;
 
 class BasePluginAdmin {
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     protected $pluginSlug = 'basePluginAdmin';
     protected static $instance = null;
