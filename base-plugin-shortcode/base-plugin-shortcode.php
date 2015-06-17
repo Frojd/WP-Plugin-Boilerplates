@@ -95,7 +95,7 @@ class BasePluginShortcode {
         $path = $this->pluginBase.'/templates/'.$name.'.php';
         if (file_exists($path)) {
             include($path);
-        } else {
+        } else if (defined("WP_DEBUG") && WP_DEBUG) {
             echo '<p>Rendering of template '.$path.' failed</p>';
         }
     }
