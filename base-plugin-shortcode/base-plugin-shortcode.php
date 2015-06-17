@@ -5,12 +5,12 @@
  * @author    Fröjd - Martin Sandström
  * @license   Fröjd Interactive AB (All Rights Reserved).
  * @link      http://frojd.se
- * @copyright Fröjd Interactive AB
+ * @copyright Fröjd Interactive AB (All Rights Reserved).
  *
  * Plugin Name: Base Plugin Shortcode
  * Plugin URI: http://frojd.se
  * Description: Example
- * Version: 1.0
+ * Version: 1.0.0
  * Author: Fröjd - Martin Sandström
  * Author URI: http://frojd.se
  * License: Fröjd Interactive AB (All Rights Reserved).
@@ -19,7 +19,7 @@
 namespace Frojd\Plugin\BasePluginShortcode;
 
 class BasePluginShortcode {
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     protected $pluginSlug = 'base_plugin_shortcode';
     protected static $instance = null;
@@ -28,8 +28,8 @@ class BasePluginShortcode {
     protected $pluginRelBase;
 
     private function __construct() {
-        $this->plugin_base = rtrim(dirname(__FILE__), '/');
-        $this->plugin_rel_base = dirname(plugin_basename(__FILE__));
+        $this->pluginBase = rtrim(dirname(__FILE__), '/');
+        $this->pluginRelBase = dirname(plugin_basename(__FILE__));
 
         register_activation_hook(__FILE__, array(&$this, 'activationHook'));
         register_deactivation_hook(__FILE__, array(&$this, 'deactivationHook'));
@@ -95,10 +95,11 @@ class BasePluginShortcode {
         $path = $this->pluginBase.'/templates/'.$name.'.php';
         if (file_exists($path)) {
             include($path);
-        } else {
-            echo '<p>Rendering of template failed</p>';
+        } else if (defined("WP_DEBUG") && WP_DEBUG) {
+            echo '<p>Rendering of template '.$path.' failed</p>';
         }
     }
 }
 
 BasePluginShortcode::getInstance();
+

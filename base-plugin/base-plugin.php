@@ -10,7 +10,7 @@
  * Plugin Name: Base Plugin
  * Plugin URI: http://frojd.se
  * Description: Example
- * Version: 1.0
+ * Version: 1.0.0
  * Author: Fröjd - Martin Sandström
  * Author URI: http://frojd.se
  * License: Fröjd Interactive AB (All Rights Reserved).
@@ -19,7 +19,7 @@
 namespace Frojd\Plugin\BasePlugin;
 
 class BasePlugin {
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     protected $pluginSlug = 'basePlugin';
     protected static $instance = null;

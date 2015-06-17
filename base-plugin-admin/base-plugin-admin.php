@@ -3,23 +3,23 @@
  *
  * @package   Base Plugin Admin
  * @author    Fröjd - Martin Sandström
- * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2013 Fröjd
+ * @license   Fröjd Interactive AB (All Rights Reserved).
+ * @link      http://frojd.se
+ * @copyright Fröjd Interactive AB (All Rights Reserved).
  *
  * Plugin Name: Base Plugin Admin
  * Plugin URI: http://frojd.se
  * Description: Example
- * Version: 1.0
- * Author: Fröjd
+ * Version: 1.0.0
+ * Author: Fröjd - Martin Sandström
  * Author URI: http://frojd.se
- * License: GPLv2 or later
+ * License: Fröjd Interactive AB (All Rights Reserved).
  */
 
 namespace Frojd\Plugin\BasePluginAdmin;
 
 class BasePluginAdmin {
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     protected $pluginSlug = 'basePluginAdmin';
     protected static $instance = null;
@@ -56,13 +56,13 @@ class BasePluginAdmin {
      * Hooks
      *------------------------------------------------------------------------*/
 
-    public function activationHook($network_wide) {
+    public function activationHook($networkWide) {
     }
 
-    public function deactivationHook($network_wide) {
+    public function deactivationHook($networkWide) {
     }
 
-    public static function uninstallHook($network_wide) {
+    public static function uninstallHook($networkWide) {
         if (! defined('WP_UNINSTALL_PLUGIN')) {
             die();
         }
@@ -73,11 +73,11 @@ class BasePluginAdmin {
     }
 
     public function adminEnqueueScriptsHook($page) {
-        if ($page == 'settings_page_' . $this->plugin_slug) {
+        if ($page == 'settings_page_' . $this->pluginSlug) {
             wp_enqueue_script('base-plugin-admin-script',
-                plugins_url($this->plugin_rel_base.'/js/admin.js' ) );
+                plugins_url($this->pluginRelBase.'/js/admin.js' ) );
             wp_enqueue_style('base-plugin-admin-styles',
-                plugins_url($this->plugin_rel_base.'/css/admin.css'));
+                plugins_url($this->pluginRelBase.'/css/admin.css'));
         }
     }
 
@@ -87,7 +87,7 @@ class BasePluginAdmin {
             __('Base Plugin Admin'),
             'manage_options',
             'base-plugin-settings',
-            array($this, 'settings_page')
+            array($this, 'settingsPage')
         );
     }
 
@@ -130,8 +130,8 @@ class BasePluginAdmin {
         $path = $this->pluginBase.'/templates/'.$name.'.php';
         if (file_exists($path)) {
             include($path);
-        } else {
-            echo '<p>Rendering of template failed</p>';
+        } else if (defined("WP_DEBUG") && WP_DEBUG) {
+            echo '<p>Rendering of template '.$path.' failed</p>';
         }
     }
 }
